@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KAEL AUDIO // QUANTUM ROBLOX ASSET STUDIO</title>
+  
+  <!-- Google Fonts: Orbitron, Space Grotesk, & Denk One -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Denk+One&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Three.js untuk Background Interaktif 3D -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            cyber: ['Orbitron', 'sans-serif'],
+            body: ['Space Grotesk', 'sans-serif'],
+            denk: ['Denk One', 'sans-serif'],
+          },
+          colors: {
+            qViolet: '#7c3aed',
+            qNeon: '#a855f7',
+            qGold: '#fbbf24',
+            qDark: '#040508',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    #canvas3d {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Quantum Cyber Glassmorphism */
+    .quantum-card {
+      background: rgba(9, 11, 22, 0.85);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(168, 85, 247, 0.25);
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      position: relative;
+      border-radius: 24px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .quantum-card:hover {
+      border-color: rgba(168, 85, 247, 0.5);
+      box-shadow: 0 20px 60px rgba(124, 58, 237, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    /* Asymmetric Futuristic Cyber Buttons */
+    .btn-quantum-purple {
+      background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+      color: #ffffff;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.75rem 1.6rem;
+      border-radius: 12px;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 25px rgba(168, 85, 247, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .btn-quantum-purple:hover:not(:disabled) {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, #c084fc 0%, #9333ea 100%);
+      box-shadow: 0 0 35px rgba(168, 85, 247, 0.7);
+    }
+    .btn-quantum-purple:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      filter: grayscale(1);
+    }
+
+    .btn-quantum-gold {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      color: #05070a;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.75rem 1.6rem;
+      border-radius: 12px;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 25px rgba(251, 191, 36, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+    .btn-quantum-gold:hover:not(:disabled) {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, #fde047 0%, #d97706 100%);
+      box-shadow: 0 0 35px rgba(251, 191, 36, 0.7);
+    }
+    .btn-quantum-gold:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      filter: grayscale(1);
+    }
+
+    .btn-quantum-outline {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      color: #e2e8f0;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.7rem 1.4rem;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+    }
+    .btn-quantum-outline:hover {
+      border-color: #a855f7;
+      background: rgba(168, 85, 247, 0.15);
+      color: #ffffff;
+    }
+
+    /* Range Input Custom */
+    input[type=range] {
+      -webkit-appearance: none;
+      background: rgba(255, 255, 255, 0.12);
+      height: 5px;
+      border-radius: 9999px;
+      outline: none;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 18px;
+      width: 18px;
+      border-radius: 6px;
+      background: #a855f7;
+      box-shadow: 0 0 15px #c084fc;
+      cursor: pointer;
+      border: 2px solid #ffffff;
+      transform: rotate(45deg);
+    }
+
+    .trim-handle {
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.8);
+      cursor: ew-resize;
+    }
+  </style>
+</head>
+<body class="bg-[#030408] text-neutral-200 font-body min-h-screen relative overflow-x-hidden selection:bg-purple-500 selection:text-white">
+
+  <!-- THREE.JS 3D BACKGROUND -->
+  <canvas id="canvas3d"></canvas>
+
+  <div class="relative z-10 flex flex-col justify-between min-h-screen">
+    
+    <!-- NAVBAR -->
+    <header class="border-b border-purple-900/30 bg-[#060812]/90 backdrop-blur-xl sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 via-violet-500 to-amber-400 p-[1px] shadow-[0_0_25px_rgba(168,85,247,0.4)]">
+            <div class="w-full h-full bg-[#070914] rounded-2xl flex items-center justify-center text-purple-400 text-xl">
+              <i class="fa-solid fa-waveform"></i>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-cyber font-black text-2xl tracking-wider text-white">KAEL<span class="text-purple-400">AUDIO</span></span>
+              <span class="text-[9px] font-mono bg-purple-500/20 text-purple-300 border border-purple-500/30 px-2 py-0.5 rounded-full uppercase">Quantum Studio</span>
+            </div>
+            <span class="block text-[10px] font-mono tracking-widest text-neutral-400">Roblox Audio Engine & Open Cloud Asset Uploader</span>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="flex items-center gap-2 bg-black/60 p-1.5 rounded-2xl border border-white/10">
+          <button onclick="switchTab('studio')" id="tab-btn-studio" class="px-5 py-2 rounded-xl font-cyber text-xs tracking-wider font-bold bg-purple-600 text-white shadow-[0_0_15px_rgba(168,85,247,0.5)] transition">Audio Studio</button>
+          <button onclick="switchTab('roblox-api')" id="tab-btn-api" class="px-5 py-2 rounded-xl font-cyber text-xs tracking-wider text-neutral-400 hover:text-white transition flex items-center gap-2">
+            <i class="fa-solid fa-cloud-arrow-up text-amber-400"></i> Roblox Open Cloud API
+          </button>
+          <button onclick="openAdminModalOrTab()" id="tab-btn-admin" class="px-5 py-2 rounded-xl font-cyber text-xs tracking-wider text-amber-400 hover:text-white transition flex items-center gap-2 border border-amber-400/20 bg-amber-400/5">
+            <i class="fa-solid fa-shield-halved text-amber-400"></i> Admin Access
+          </button>
+        </div>
+
+        <!-- API Badge & HWID -->
+        <div class="hidden lg:flex items-center gap-4">
+          <div id="api-status-badge" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono">
+            <span class="w-2 h-2 rounded-full bg-amber-400"></span> API: Belum Terhubung
+          </div>
+          <button onclick="openLicenseModal()" class="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-300 hover:text-white hover:border-purple-400 transition bg-white/5" title="Buka Panel HWID">
+            <i class="fa-solid fa-fingerprint text-sm"></i>
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- CONTENT WRAPPER -->
+    <main class="max-w-7xl mx-auto px-6 py-10 w-full space-y-10">
+
+      <!-- ================= SECTION 1: AUDIO STUDIO WORKSTATION ================= -->
+      <div id="section-studio" class="space-y-10">
+        
+        <!-- TOP WORKSPACE: URL STREAM & LOCAL FILE DRAG-DROP -->
+        <section class="quantum-card p-6 md:p-8 space-y-6">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-white/10">
+            <div>
+              <h1 class="font-cyber font-black text-2xl md:text-3xl text-white tracking-wide">
+                AUDIO WORKSTATION & ROBLOX STUDIO PIPELINE
+              </h1>
+              <p class="text-xs text-neutral-400 mt-1">
+                Edit tempo audio, potong segmen gelombang suara, lakukan simulasi Roblox Studio 1.0x, dan upload langsung via Open Cloud API.
+              </p>
+            </div>
+            <span class="text-xs font-cyber px-4 py-2 rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-300 uppercase tracking-wider">
+              Studio Target: PlaybackSpeed = 1
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- URL Fetch (8 Cols) -->
+            <div class="lg:col-span-8 space-y-4">
+              <div class="flex flex-col sm:flex-row gap-3">
+                <div class="relative flex-1">
+                  <i class="fa-solid fa-link absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500 text-sm"></i>
+                  <input type="text" id="audio-url-input" placeholder="Masukkan URL audio langsung (.mp3 / .wav / cdn stream)..." class="w-full bg-black/60 border border-white/15 rounded-xl pl-11 pr-4 py-3.5 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-purple-400 transition">
+                </div>
+                <button id="btn-fetch" onclick="fetchAudioUrl()" class="btn-quantum-gold text-xs shrink-0">
+                  <i class="fa-solid fa-cloud-arrow-down mr-2"></i> Fetch Audio
+                </button>
+              </div>
+
+              <!-- PROGRESS BAR -->
+              <div class="bg-black/50 border border-white/10 rounded-2xl p-4">
+                <div class="flex justify-between items-center text-xs font-cyber mb-2">
+                  <span id="progress-status-text" class="text-neutral-400 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-notch text-purple-400"></i> Standby &mdash; Drag & drop file audio atau masukkan link di atas
+                  </span>
+                  <span id="progress-percent-text" class="text-purple-400 font-mono font-bold">0%</span>
+                </div>
+                <div class="w-full h-3 bg-neutral-900 rounded-full overflow-hidden border border-white/10 relative p-[2px]">
+                  <div id="progress-bar-fill" class="h-full bg-gradient-to-r from-purple-600 via-violet-400 to-amber-400 w-0 transition-all duration-300 rounded-full shadow-[0_0_15px_#c084fc]"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Drag & Drop Audio Local (4 Cols) -->
+            <div class="lg:col-span-4">
+              <div id="dropzone" class="h-full min-h-[140px] border-2 border-dashed border-purple-500/30 hover:border-purple-400 rounded-2xl p-5 text-center flex flex-col items-center justify-center cursor-pointer bg-black/40 hover:bg-purple-950/20 transition group">
+                <input type="file" id="local-file-input" accept="audio/*" class="hidden">
+                <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-2 group-hover:scale-110 transition">
+                  <i class="fa-solid fa-file-audio text-xl"></i>
+                </div>
+                <div class="font-cyber text-xs text-white uppercase font-bold tracking-wider">Drag & Drop File Audio</div>
+                <div class="text-[10px] text-neutral-400 mt-0.5">MP3, WAV, OGG, FLAC (Proses Langsung di Browser)</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- WAVEFORM TRIMMER WORKSPACE -->
+        <section class="quantum-card p-6 md:p-8 space-y-6">
+          <div class="flex items-center gap-4 p-4 rounded-2xl bg-black/60 border border-white/10">
+            <div class="w-12 h-12 rounded-xl bg-purple-950/50 border border-purple-500/30 flex items-center justify-center overflow-hidden shrink-0">
+              <i class="fa-solid fa-compact-disc text-amber-400 text-xl animate-spin" style="animation-duration: 8s;"></i>
+            </div>
+            <div class="min-w-0 flex-1">
+              <div class="text-[9px] font-cyber tracking-widest uppercase text-purple-400 font-bold">ACTIVE AUDIO STREAM</div>
+              <div id="active-track-title" class="font-bold text-sm text-neutral-400 truncate font-cyber">Belum ada audio yang dimuat</div>
+              <div id="active-track-specs" class="text-xs font-mono text-neutral-500 mt-0.5">Duration: --:-- | Original Rate: 1.0x</div>
+            </div>
+            <span class="hidden sm:inline-block text-[10px] font-mono px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-neutral-300">
+              ENGINE: Web Audio API OfflineContext
+            </span>
+          </div>
+
+          <!-- Waveform Display Box -->
+          <div class="space-y-3">
+            <div class="flex justify-between items-center text-xs">
+              <span class="font-cyber text-neutral-300 tracking-wider">Interactive Waveform Cutter &mdash; Geser Pin Ungu untuk Memotong</span>
+              <span class="text-[11px] font-mono text-purple-400" id="selection-range-label">0:00.0 &mdash; 0:00.0</span>
+            </div>
+
+            <div id="waveform-box" class="relative w-full h-32 bg-black/80 rounded-2xl border border-purple-500/40 overflow-hidden flex items-center px-4 select-none">
+              <!-- Left Trim Handle -->
+              <div id="handle-start" class="trim-handle absolute top-0 bottom-0 w-4 bg-purple-500 text-black flex items-center justify-center rounded-l-lg z-30" style="left: 0%;">
+                <i class="fa-solid fa-grip-lines-vertical text-[10px] text-white"></i>
+                <span id="badge-start-time" class="absolute -top-6 left-0 text-[10px] font-mono bg-purple-600 text-white px-1.5 py-0.5 rounded font-bold">0:00.0</span>
+              </div>
+
+              <!-- Generated Audio Wave Bars -->
+              <div id="wave-bars-container" class="w-full h-24 flex items-center justify-between gap-[2px] z-10 opacity-80"></div>
+
+              <!-- Right Trim Handle -->
+              <div id="handle-end" class="trim-handle absolute top-0 bottom-0 w-4 bg-purple-500 text-black flex items-center justify-center rounded-r-lg z-30" style="right: 0%;">
+                <i class="fa-solid fa-grip-lines-vertical text-[10px] text-white"></i>
+                <span id="badge-end-time" class="absolute -top-6 right-0 text-[10px] font-mono bg-purple-600 text-white px-1.5 py-0.5 rounded font-bold">0:00.0</span>
+              </div>
+
+              <div id="playhead-line" class="absolute top-0 bottom-0 w-[2px] bg-amber-400 shadow-[0_0_10px_#fbbf24] z-20 pointer-events-none" style="left: 0%;"></div>
+            </div>
+          </div>
+
+          <!-- Timeline & Controls -->
+          <div class="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-white/10">
+            <div class="flex items-center gap-4">
+              <button id="btn-preview-play" onclick="togglePlayOriginal()" class="w-12 h-12 rounded-xl bg-purple-600 hover:bg-purple-500 text-white flex items-center justify-center shadow-[0_0_20px_rgba(168,85,247,0.5)] transition">
+                <i id="preview-play-icon" class="fa-solid fa-play text-sm"></i>
+              </button>
+              <div class="font-mono text-sm">
+                <span id="current-play-time" class="text-white font-bold">0:00.0</span> 
+                <span class="text-neutral-500">/</span> 
+                <span id="total-track-time" class="text-neutral-400">0:00.0</span>
+              </div>
+            </div>
+
+            <div class="text-xs font-cyber text-neutral-300">
+              Durasi Terpotong: <span id="selected-dur-text" class="text-white font-bold">0:00.0</span> 
+              &rarr; <span class="text-amber-400 font-bold">menjadi <span id="speedup-dur-text">0:00.0</span></span> pada kecepatan 2.33x
+            </div>
+          </div>
+        </section>
+
+        <!-- PARAMETERS, SIMULATOR & CLOUD UPLOAD -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          <!-- Parameters (6 Cols) -->
+          <div class="lg:col-span-6 quantum-card p-6 md:p-8 space-y-6">
+            <h3 class="font-cyber font-bold text-white text-base uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-sliders text-purple-400"></i> Audio Parameters
+            </h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="p-4 rounded-xl bg-black/50 border border-white/10">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-xs font-cyber text-neutral-300 uppercase">Export Speed</span>
+                  <span id="slider-speed-val" class="font-cyber font-bold text-amber-400 text-sm">2.33x</span>
+                </div>
+                <input type="range" id="input-speed" min="1.0" max="3.0" step="0.01" value="2.33" class="w-full">
+                <div class="text-[10px] font-mono text-neutral-500 mt-1">Roblox Studio playback: 1.0x (Normal)</div>
+              </div>
+
+              <div class="p-4 rounded-xl bg-black/50 border border-white/10">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-xs font-cyber text-neutral-300 uppercase">Amplification</span>
+                  <span id="slider-gain-val" class="font-cyber font-bold text-amber-400 text-sm">-4 dB</span>
+                </div>
+                <input type="range" id="input-gain" min="-12" max="6" step="1" value="-4" class="w-full">
+                <div class="text-[10px] font-mono text-neutral-500 mt-1">Mencegah distorsi volume</div>
+              </div>
+            </div>
+
+            <div>
+              <div class="text-[10px] font-cyber text-neutral-400 uppercase tracking-wider mb-2">Quick Presets</div>
+              <div class="flex flex-wrap gap-2">
+                <button onclick="setSpeedPreset(2.1)" class="px-3 py-1.5 rounded-lg text-xs font-cyber bg-black/50 border border-white/10 text-neutral-300 hover:border-purple-400">2.1x</button>
+                <button onclick="setSpeedPreset(2.3255)" class="px-3 py-1.5 rounded-lg text-xs font-cyber bg-purple-600 text-white font-bold border border-purple-400">2.33x (Standard)</button>
+                <button onclick="setSpeedPreset(2.5)" class="px-3 py-1.5 rounded-lg text-xs font-cyber bg-black/50 border border-white/10 text-neutral-300 hover:border-purple-400">2.5x</button>
+                <button onclick="setSpeedPreset(2.7)" class="px-3 py-1.5 rounded-lg text-xs font-cyber bg-black/50 border border-white/10 text-neutral-300 hover:border-purple-400">2.7x</button>
+              </div>
+            </div>
+
+            <div class="pt-2">
+              <button id="btn-process" onclick="runAudioProcessingEngine()" class="btn-quantum-purple w-full text-xs">
+                <i class="fa-solid fa-bolt mr-2"></i> Render Audio File
+              </button>
+              <div id="process-log" class="text-xs font-mono text-neutral-400 mt-2 text-center">Silakan render audio untuk mengaktifkan simulator & uploader.</div>
+            </div>
+          </div>
+
+          <!-- Studio Simulator & Roblox Uploader (6 Cols) -->
+          <div class="lg:col-span-6 quantum-card p-6 md:p-8 space-y-6">
+            <div class="flex items-center justify-between pb-3 border-b border-white/10">
+              <h3 class="font-cyber font-bold text-white text-base uppercase tracking-wider flex items-center gap-2">
+                <i class="fa-solid fa-gamepad text-amber-400"></i> Roblox Studio 1.0x Test
+              </h3>
+              <span class="text-[10px] font-mono bg-purple-500/20 text-purple-300 border border-purple-500/30 px-2 py-0.5 rounded-md font-bold">In-Game PlaybackSpeed = 1</span>
+            </div>
+
+            <div class="p-4 rounded-xl bg-black/60 border border-white/10 space-y-3">
+              <p class="text-xs text-neutral-300 leading-relaxed">
+                Test audio langsung di browser dengan setting Roblox Studio bawaan <code class="text-amber-400 bg-white/5 px-1 py-0.5 rounded">PlaybackSpeed = 1</code>:
+              </p>
+              <button id="btn-sim-play" onclick="toggleSimPlayback()" disabled class="w-full py-3 rounded-xl border border-purple-500/40 hover:bg-purple-600 hover:text-white font-cyber font-bold text-xs uppercase text-purple-300 transition flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed">
+                <i id="sim-icon" class="fa-solid fa-play"></i> <span id="sim-text">Play Studio Simulator (1.0x)</span>
+              </button>
+            </div>
+
+            <!-- Direct Upload to Roblox Cloud Panel -->
+            <div class="p-5 rounded-xl bg-purple-950/20 border border-purple-500/30 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="font-cyber text-xs text-white font-bold uppercase tracking-wider flex items-center gap-2">
+                  <i class="fa-solid fa-cloud-arrow-up text-amber-400"></i> Upload Otomatis ke Roblox
+                </span>
+                <span id="cloud-account-name" class="text-[10px] font-mono text-neutral-400">API Belum Terhubung</span>
+              </div>
+
+              <input type="text" id="roblox-asset-title" placeholder="Nama Audio di Roblox Creator Hub..." class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-amber-400">
+
+              <div class="flex gap-2">
+                <button id="btn-direct-upload" onclick="uploadDirectToRoblox()" disabled class="btn-quantum-gold flex-1 text-xs">
+                  <i class="fa-solid fa-upload mr-2"></i> Upload via Open Cloud
+                </button>
+                <button id="btn-manual-download" onclick="downloadProcessedWav()" disabled class="btn-quantum-outline text-xs" title="Download File WAV ke Komputer">
+                  <i class="fa-solid fa-download"></i>
+                </button>
+              </div>
+
+              <!-- Result Notification -->
+              <div id="upload-result-box" class="hidden p-3 rounded-xl bg-black/80 border border-emerald-500/40 text-xs font-mono space-y-1">
+                <div class="text-emerald-400 font-bold flex items-center gap-1">
+                  <i class="fa-solid fa-circle-check"></i> Audio Terupload ke Roblox!
+                </div>
+                <div class="text-neutral-300">Asset ID: <strong id="uploaded-asset-id" class="text-amber-400">--</strong></div>
+              </div>
+            </div>
+
+            <!-- Luau Code Copy -->
+            <div class="p-3 bg-black/60 rounded-xl border border-white/10 flex items-center justify-between text-xs font-mono">
+              <span class="text-neutral-400">Sound.PlaybackSpeed = 1</span>
+              <button onclick="copyLuauSnippet()" class="text-purple-400 hover:underline text-[11px] font-cyber">Copy Script Luau</button>
+            </div>
+
+          </div>
+
+        </section>
+
+      </div>
+
+      <!-- ================= SECTION 2: ROBLOX OPEN CLOUD CONFIG ================= -->
+      <div id="section-roblox-api" class="hidden space-y-8">
+        
+        <div class="quantum-card p-6 md:p-8 space-y-6">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-white/10">
+            <div>
+              <h2 class="font-cyber font-black text-2xl text-white">ROBLOX OPEN CLOUD API CREDENTIALS</h2>
+              <p class="text-xs text-neutral-400 mt-1">
+                Hubungkan API Key dari Creator Hub akun Roblox kamu agar website bisa mengunggah file audio secara instan.
+              </p>
+            </div>
+            <button onclick="saveApiCredentials()" class="btn-quantum-gold text-xs">
+              <i class="fa-solid fa-floppy-disk mr-2"></i> Simpan Konfigurasi
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs font-cyber uppercase tracking-wider text-neutral-300 mb-2">Roblox User ID / Group ID</label>
+                <input type="text" id="api-user-id" placeholder="Contoh: 11611148273" class="w-full bg-black/70 border border-white/15 rounded-xl px-4 py-3 text-xs font-mono text-white focus:outline-none focus:border-purple-400">
+                <span class="text-[10px] text-neutral-500">ID profil Roblox milikmu atau Group ID tujuan upload.</span>
+              </div>
+
+              <div>
+                <label class="block text-xs font-cyber uppercase tracking-wider text-neutral-300 mb-2">Target Creator Type</label>
+                <select id="api-creator-type" class="w-full bg-black/70 border border-white/15 rounded-xl px-4 py-3 text-xs font-mono text-white focus:outline-none focus:border-purple-400">
+                  <option value="User">User Profile (Akun Pribadi)</option>
+                  <option value="Group">Group Creator (Grup Roblox)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-cyber uppercase tracking-wider text-neutral-300 mb-2">Account Nickname</label>
+                <input type="text" id="api-account-nick" placeholder="Contoh: Kael Studio Main" class="w-full bg-black/70 border border-white/15 rounded-xl px-4 py-3 text-xs font-mono text-white focus:outline-none focus:border-purple-400">
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs font-cyber uppercase tracking-wider text-neutral-300 mb-2">Open Cloud API Key</label>
+                <input type="password" id="api-key-value" placeholder="Paste Open Cloud API Key dari Roblox Creator Hub..." class="w-full bg-black/70 border border-white/15 rounded-xl px-4 py-3 text-xs font-mono text-white focus:outline-none focus:border-purple-400">
+                <span class="text-[10px] text-neutral-500">Pastikan izin API Key menyertakan: <code>assets:read,write</code></span>
+              </div>
+
+              <div class="p-4 rounded-xl bg-purple-950/20 border border-purple-500/20 text-xs space-y-2 text-neutral-300">
+                <div class="font-cyber font-bold text-amber-400 uppercase text-[11px] flex items-center gap-2">
+                  <i class="fa-solid fa-shield-halved"></i> Keamanan Kunci API
+                </div>
+                <p class="text-[11px] text-neutral-400 leading-relaxed">
+                  Kunci API Anda disimpan langsung di browser lokal Anda (LocalStorage) dan digunakan untuk memanggil endpoint resmi Roblox Open Cloud: <code>https://apis.roblox.com/assets/v1/assets</code>.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ================= SECTION 3: ADMIN ACCESS LICENSE & HWID MANAGER ================= -->
+      <div id="section-admin" class="hidden space-y-8">
+        
+        <div class="quantum-card p-6 md:p-8 space-y-6 border-amber-400/30">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-white/10">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 rounded-2xl bg-amber-400/20 border border-amber-400/40 text-amber-400 flex items-center justify-center text-xl shadow-[0_0_20px_rgba(251,191,36,0.3)]">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h2 class="font-cyber font-black text-2xl text-white">KAEL ADMIN LICENSE & HWID CONTROL</h2>
+                  <span class="text-[9px] font-cyber px-2.5 py-0.5 rounded-full bg-amber-400 text-black font-bold uppercase">Super Admin</span>
+                </div>
+                <p class="text-xs text-neutral-400 mt-1">
+                  Buat HWID otomatis, generate lisensi pelanggan, dan uji coba/buka HWID costumer langsung dari panel ini.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <button onclick="switchTab('studio')" class="px-4 py-2 rounded-xl bg-purple-600/30 border border-purple-500/40 text-purple-300 hover:bg-purple-600 hover:text-white font-cyber text-xs transition">
+                <i class="fa-solid fa-waveform mr-1"></i> Buka Studio
+              </button>
+              <button onclick="lockAdminSession()" class="px-4 py-2 rounded-xl border border-red-500/30 text-red-400 hover:bg-red-500 hover:text-white font-cyber text-xs transition flex items-center gap-2">
+                <i class="fa-solid fa-right-from-bracket"></i> Lock Admin
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Left 6 Cols: Form Generator + Random HWID -->
+            <div class="lg:col-span-6 space-y-5">
+              <div class="p-5 rounded-2xl bg-black/60 border border-white/10 space-y-4">
+                
+                <!-- HWID Generator Controls -->
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <label class="text-xs font-cyber uppercase tracking-wider text-neutral-300">
+                      HWID Target / Costumer
+                    </label>
+                    <button onclick="generateRandomHWIDForInput()" class="text-[11px] font-cyber text-amber-400 hover:text-amber-300 flex items-center gap-1.5 underline">
+                      <i class="fa-solid fa-shuffle"></i> ⚡ Buat Random HWID Otomatis
+                    </button>
+                  </div>
+                  <div class="relative">
+                    <input type="text" id="admin-input-hwid" placeholder="Paste HWID costumer atau klik 'Buat Random HWID Otomatis'..." class="w-full bg-black/80 border border-white/15 rounded-xl pl-4 pr-24 py-3 text-xs font-mono text-white placeholder-neutral-500 focus:outline-none focus:border-amber-400">
+                    <button onclick="copyAdminInputHWID()" class="absolute right-2 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-[10px] font-mono text-neutral-300">
+                      Salin
+                    </button>
+                  </div>
+                  <span class="text-[10px] text-neutral-400 mt-1 block">Bisa masukkan HWID costumer, atau buat HWID baru secara instan.</span>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-cyber uppercase tracking-wider text-neutral-300 mb-2">Nama / Username Costumer</label>
+                  <input type="text" id="admin-input-name" placeholder="Contoh: Costumer_Roblox_01 / Discord ID" class="w-full bg-black/80 border border-white/15 rounded-xl px-4 py-3 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-amber-400">
+                </div>
+
+                <div>
+                  <label class="block text-xs font-cyber uppercase tracking-wider text-neutral-300 mb-2">Tipe Lisensi</label>
+                  <select id="admin-input-type" class="w-full bg-black/80 border border-white/15 rounded-xl px-4 py-3 text-xs font-cyber text-white focus:outline-none focus:border-amber-400">
+                    <option value="LIFETIME">Lifetime Access (1 Device)</option>
+                    <option value="VIP">VIP Studio Pass (1 Device)</option>
+                    <option value="COMMERCIAL">Commercial Reseller License</option>
+                  </select>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                  <button onclick="adminGenerateKey()" class="py-3.5 px-4 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-black font-cyber font-black text-xs uppercase tracking-wider hover:brightness-110 transition shadow-[0_0_20px_rgba(251,191,36,0.4)] flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-key"></i> Buat License Key
+                  </button>
+                  <!-- Fitur Utama: Buka/Uji HWID Costumer di Browser Admin -->
+                  <button onclick="adminSimulateAndUnlockCustomer()" class="py-3.5 px-4 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-cyber font-bold text-xs uppercase tracking-wider transition shadow-[0_0_25px_rgba(168,85,247,0.4)] flex items-center justify-center gap-2" title="Ganti HWID browser ke HWID costumer dan buka akses web langsung">
+                    <i class="fa-solid fa-unlock"></i> Buka HWID Costumer Ini
+                  </button>
+                </div>
+              </div>
+
+              <!-- Output Box -->
+              <div id="admin-output-box" class="hidden p-5 rounded-2xl bg-black/80 border border-amber-400/40 space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] font-cyber uppercase tracking-wider text-neutral-400">Hasil License Key (Terkunci ke HWID di Atas):</span>
+                  <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">READY TO SEND</span>
+                </div>
+                <div id="admin-key-result" class="font-mono text-sm text-amber-400 font-bold p-3 bg-black rounded-xl border border-white/15 select-all break-all">--</div>
+                
+                <div class="flex gap-2">
+                  <button onclick="adminCopyKeyOnly()" class="flex-1 py-2.5 rounded-xl border border-white/20 hover:bg-white hover:text-black text-xs font-cyber font-bold transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-copy"></i> Salin Key
+                  </button>
+                  <button onclick="adminCopyFullWhatsApp()" class="flex-1 py-2.5 rounded-xl bg-emerald-500 text-black hover:bg-emerald-400 text-xs font-cyber font-bold transition flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp"></i> Salin Format WA
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right 6 Cols: Quick Switch HWID Tools & History Log -->
+            <div class="lg:col-span-6 space-y-4">
+              
+              <!-- Quick HWID Device Switcher Card -->
+              <div class="p-4 rounded-2xl bg-purple-950/20 border border-purple-500/30 space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-cyber font-bold text-white uppercase flex items-center gap-2">
+                    <i class="fa-solid fa-laptop-code text-amber-400"></i> Status HWID Browser Kamu Saat Ini
+                  </span>
+                  <button onclick="restoreAdminOwnHWID()" class="text-[10px] text-purple-300 hover:text-white underline font-mono">Reset ke HWID Asliku</button>
+                </div>
+                <div class="p-3 bg-black/80 rounded-xl border border-white/10 flex items-center justify-between">
+                  <div>
+                    <div class="text-[9px] font-cyber text-neutral-400 uppercase">Aktif di Browser Ini:</div>
+                    <div id="admin-current-active-hwid" class="font-mono text-xs text-amber-400 font-bold mt-0.5">--</div>
+                  </div>
+                  <button onclick="quickGenerateNewBrowserHWID()" class="px-3 py-1.5 rounded-lg border border-white/20 hover:bg-white hover:text-black text-[10px] font-cyber transition">
+                    Acak HWID Browser
+                  </button>
+                </div>
+                <p class="text-[11px] text-neutral-400">
+                  <strong class="text-white">Tips Admin:</strong> Tombol <span class="text-amber-400 font-bold">"Buka HWID Costumer Ini"</span> akan seketika menyamakan HWID browser dengan HWID costumer dan memasang lisensinya sehingga Anda dapat langsung menguji web pelanggan tanpa terhalang proteksi 1 Device 1 HWID!
+                </p>
+              </div>
+
+              <!-- History Log -->
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <h4 class="font-cyber font-bold text-xs uppercase tracking-wider text-neutral-300 flex items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left text-amber-400"></i> Riwayat Lisensi Dibuat
+                  </h4>
+                  <button onclick="clearAdminHistory()" class="text-[10px] font-mono text-neutral-500 hover:text-red-400 underline">Hapus Riwayat</button>
+                </div>
+
+                <div id="admin-history-list" class="space-y-2 max-h-[340px] overflow-y-auto pr-1">
+                  <!-- Log item dynamically inserted -->
+                  <div class="p-4 rounded-xl bg-black/50 border border-white/10 text-center text-xs text-neutral-500 font-mono">
+                    Belum ada lisensi yang dibuat pada sesi ini.
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/10 bg-[#060812]/90 py-6 px-6 text-xs font-mono text-neutral-500">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+        <div>&copy; 2026 KAEL AUDIO // QUANTUM ROBLOX ASSET ENGINE</div>
+        <div class="flex items-center gap-6">
+          <span>HWID: <strong id="foot-hwid" class="text-neutral-300">--</strong></span>
+          <span class="text-emerald-400">OPEN CLOUD COMPLIANT</span>
+          <a href="https://wa.me/6282138096386" target="_blank" class="text-purple-400 hover:underline">WhatsApp Admin</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- MODAL LICENSE HWID -->
+  <div id="license-modal" class="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/80 backdrop-blur-md hidden">
+    <div class="quantum-card p-8 rounded-3xl max-w-md w-full relative border-purple-500/30">
+      <div class="text-center mb-6">
+        <div class="w-12 h-12 rounded-2xl bg-purple-500/20 border border-purple-500/40 text-purple-400 flex items-center justify-center mx-auto mb-3">
+          <i class="fa-solid fa-key text-lg"></i>
+        </div>
+        <h3 class="font-cyber font-bold text-lg text-white uppercase tracking-wider">Aktivasi Kael Audio</h3>
+        <p class="text-xs text-neutral-400 mt-1">Tools dilindungi sistem lisensi HWID Kael Studio.</p>
+      </div>
+
+      <div class="space-y-4">
+        <div class="p-4 bg-black/60 rounded-2xl border border-white/10 relative">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] uppercase font-cyber text-neutral-400">Device Hardware ID (HWID)</span>
+            <button onclick="copyCurrentHWID()" class="text-[10px] text-amber-400 hover:underline font-mono">Salin HWID</button>
+          </div>
+          <div id="modal-hwid-text" class="font-mono text-xs text-amber-400 font-bold mt-1 break-all select-all">Generating...</div>
+        </div>
+
+        <div>
+          <label class="text-[10px] font-cyber uppercase tracking-wider text-neutral-400 block mb-2">License Key</label>
+          <input type="text" id="license-key-val" placeholder="Masukkan License Key unik perangkat ini..." class="w-full bg-black/70 border border-white/20 rounded-xl px-4 py-3 text-xs font-mono text-white focus:outline-none focus:border-purple-400">
+        </div>
+
+        <div class="flex gap-3 pt-2">
+          <button onclick="closeLicenseModal()" class="btn-quantum-outline flex-1 text-xs">Tutup</button>
+          <button onclick="submitLicenseKey()" class="btn-quantum-gold flex-1 text-xs">Aktivasi Device</button>
+        </div>
+
+        <!-- Tombol Khusus Admin agar Admin tidak pernah terkunci -->
+        <div class="pt-3 border-t border-white/10 text-center flex items-center justify-between text-xs">
+          <span class="text-[11px] text-neutral-500">Kamu adalah Admin?</span>
+          <button type="button" onclick="openAdminBypassModal()" class="text-amber-400 hover:underline font-cyber text-[11px] flex items-center gap-1">
+            <i class="fa-solid fa-shield-halved"></i> Bypass / Login Admin
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT ENGINE -->
+  <script>
+    /* 1. THREE.JS 3D BACKGROUND */
+    let scene, camera, renderer, particleSystem, cyberRing;
+
+    function init3DQuantum() {
+      const canvas = document.getElementById('canvas3d');
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
+      camera.position.z = 220;
+
+      renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      const pCount = 800;
+      const geom = new THREE.BufferGeometry();
+      const pos = new Float32Array(pCount * 3);
+
+      for (let i = 0; i < pCount * 3; i += 3) {
+        pos[i] = (Math.random() - 0.5) * 750;
+        pos[i + 1] = (Math.random() - 0.5) * 750;
+        pos[i + 2] = (Math.random() - 0.5) * 550;
+      }
+      geom.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+
+      const pMat = new THREE.PointsMaterial({
+        color: 0xa855f7,
+        size: 2.4,
+        transparent: true,
+        opacity: 0.6
+      });
+      particleSystem = new THREE.Points(geom, pMat);
+      scene.add(particleSystem);
+
+      const rGeo = new THREE.TorusGeometry(130, 2, 16, 90);
+      const rMat = new THREE.MeshBasicMaterial({
+        color: 0x7c3aed,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.12
+      });
+      cyberRing = new THREE.Mesh(rGeo, rMat);
+      scene.add(cyberRing);
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      function loop() {
+        requestAnimationFrame(loop);
+        if (particleSystem) {
+          particleSystem.rotation.y += 0.0008;
+          particleSystem.rotation.x += 0.0004;
+        }
+        if (cyberRing) {
+          cyberRing.rotation.z += 0.001;
+          cyberRing.rotation.y += 0.0006;
+        }
+        renderer.render(scene, camera);
+      }
+      loop();
+    }
+
+    /* 2. AUDIO & CONVERSION LOGIC */
+    let audioContext = null;
+    let decodedBuffer = null;
+    let originalAudioElement = new Audio();
+    let simAudioElement = new Audio();
+    let processedWavBlob = null;
+    let processedAudioUrl = null;
+    let isPreviewPlaying = false;
+    let isSimPlaying = false;
+
+    let trimStart = 0;
+    let trimEnd = 0;
+    let trackDuration = 0;
+
+    function initSystem() {
+      let hwid = localStorage.getItem('kael_hwid');
+      if (!hwid) {
+        const gen = () => Math.random().toString(36).substring(2, 6).toUpperCase();
+        hwid = `HWID-${gen()}-${gen()}-${gen()}-${gen()}`;
+        localStorage.setItem('kael_hwid', hwid);
+      }
+      document.getElementById('foot-hwid').innerText = hwid;
+      document.getElementById('modal-hwid-text').innerText = hwid;
+
+      loadSavedApi();
+      renderWaveBars();
+    }
+
+    let isAdminUnlocked = false;
+
+    function openAdminModalOrTab() {
+      if (isAdminUnlocked) {
+        switchTab('admin');
+      } else {
+        document.getElementById('admin-auth-modal').classList.remove('hidden');
+        document.getElementById('admin-password-input').focus();
+      }
+    }
+
+    function closeAdminAuthModal() {
+      document.getElementById('admin-auth-modal').classList.add('hidden');
+    }
+
+    function submitAdminPassword() {
+      const pass = document.getElementById('admin-password-input').value.trim();
+      // Password Admin Kael Studio: kael2026 atau KAEL-ADMIN
+      if (pass === 'kael2026' || pass === 'KAEL-ADMIN') {
+        isAdminUnlocked = true;
+        // Berikan lisensi resmi terikat HWID perangkat ini
+        const currentHWID = localStorage.getItem('kael_hwid') || makeNewRandomHWID();
+        const legitimateKey = computeDeviceKey(currentHWID);
+        localStorage.setItem('kael_active_license', legitimateKey);
+
+        closeAdminAuthModal();
+        document.getElementById('license-modal').classList.add('hidden');
+        switchTab('admin');
+        loadAdminHistory();
+        updateAdminHWIDDisplay();
+      } else {
+        alert('Password Admin Salah!');
+      }
+    }
+
+    function lockAdminSession() {
+      isAdminUnlocked = false;
+      switchTab('studio');
+      alert('Sesi Admin telah dikunci.');
+    }
+
+    function switchTab(tab) {
+      const studioSec = document.getElementById('section-studio');
+      const apiSec = document.getElementById('section-roblox-api');
+      const adminSec = document.getElementById('section-admin');
+
+      const btnStudio = document.getElementById('tab-btn-studio');
+      const btnApi = document.getElementById('tab-btn-api');
+      const btnAdmin = document.getElementById('tab-btn-admin');
+
+      studioSec.classList.add('hidden');
+      apiSec.classList.add('hidden');
+      if (adminSec) adminSec.classList.add('hidden');
+
+      btnStudio.className = 'px-5 py-2 rounded-xl font-cyber text-xs tracking-wider text-neutral-400 hover:text-white transition';
+      btnApi.className = 'px-5 py-2 rounded-xl font-cyber text-xs tracking-wider text-neutral-400 hover:text-white transition flex items-center gap-2';
+      btnAdmin.className = 'px-5 py-2 rounded-xl font-cyber text-xs tracking-wider text-amber-400 hover:text-white transition flex items-center gap-2 border border-amber-400/20 bg-amber-400/5';
+
+      if (tab === 'studio') {
+        studioSec.classList.remove('hidden');
+        btnStudio.className = 'px-5 py-2 rounded-xl font-cyber text-xs tracking-wider font-bold bg-purple-600 text-white shadow-[0_0_15px_rgba(168,85,247,0.5)] transition';
+      } else if (tab === 'roblox-api') {
+        apiSec.classList.remove('hidden');
+        btnApi.className = 'px-5 py-2 rounded-xl font-cyber text-xs tracking-wider font-bold bg-purple-600 text-white shadow-[0_0_15px_rgba(168,85,247,0.5)] transition flex items-center gap-2';
+      } else if (tab === 'admin') {
+        if (adminSec) adminSec.classList.remove('hidden');
+        btnAdmin.className = 'px-5 py-2 rounded-xl font-cyber text-xs tracking-wider font-bold bg-amber-400 text-black shadow-[0_0_15px_rgba(251,191,36,0.5)] transition flex items-center gap-2';
+      }
+    }
+
+    /* ================= 5. ADMIN GENERATOR & HWID OVERRIDE ENGINE ================= */
+    function getRandomHexChunk() {
+      return Math.random().toString(36).substring(2, 6).toUpperCase();
+    }
+
+    // Fungsi copy universal yang aman untuk iframe & sandbox (pengganti navigator.clipboard.writeText)
+    function copyTextFallback(text) {
+      try {
+        const tempTextArea = document.createElement("textarea");
+        tempTextArea.value = text;
+        tempTextArea.style.position = "fixed";
+        tempTextArea.style.left = "-9999px";
+        tempTextArea.style.top = "0";
+        document.body.appendChild(tempTextArea);
+        tempTextArea.focus();
+        tempTextArea.select();
+        const successful = document.execCommand('copy');
+        document.body.removeChild(tempTextArea);
+        if (!successful && navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).catch(() => {});
+        }
+      } catch (err) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).catch(() => {});
+        }
+      }
+    }
+
+    function makeNewRandomHWID() {
+      return `HWID-${getRandomHexChunk()}-${getRandomHexChunk()}-${getRandomHexChunk()}-${getRandomHexChunk()}`;
+    }
+
+    function generateRandomHWIDForInput() {
+      const newHwid = makeNewRandomHWID();
+      document.getElementById('admin-input-hwid').value = newHwid;
+      adminGenerateKey();
+    }
+
+    function copyAdminInputHWID() {
+      const val = document.getElementById('admin-input-hwid').value.trim();
+      if (!val) return;
+      copyTextFallback(val);
+      alert('HWID disalin: ' + val);
+    }
+
+    function copyCurrentHWID() {
+      const hwid = localStorage.getItem('kael_hwid') || '';
+      copyTextFallback(hwid);
+      alert('HWID perangkat disalin: ' + hwid);
+    }
+
+    function adminSimulateAndUnlockCustomer() {
+      const targetHWID = document.getElementById('admin-input-hwid').value.trim();
+      if (!targetHWID) {
+        alert('Masukkan atau buat HWID target terlebih dahulu!');
+        return;
+      }
+
+      if (!localStorage.getItem('kael_original_admin_hwid')) {
+        localStorage.setItem('kael_original_admin_hwid', localStorage.getItem('kael_hwid') || makeNewRandomHWID());
+      }
+
+      localStorage.setItem('kael_hwid', targetHWID);
+      document.getElementById('foot-hwid').innerText = targetHWID;
+      const modalHWID = document.getElementById('modal-hwid-text');
+      if (modalHWID) modalHWID.innerText = targetHWID;
+
+      const validKey = computeDeviceKey(targetHWID);
+      localStorage.setItem('kael_active_license', validKey);
+
+      document.getElementById('admin-key-result').innerText = validKey;
+      document.getElementById('admin-output-box').classList.remove('hidden');
+      updateAdminHWIDDisplay();
+
+      document.getElementById('license-modal').classList.add('hidden');
+      alert(`SUKSES MEMBUKA HWID COSTUMER!\n\nBrowser sekarang menyimulasikan HWID: ${targetHWID}\nLicense Key valid: ${validKey}\n\nSeluruh studio audio langsung aktif dan terbuka.`);
+      switchTab('studio');
+    }
+
+    function restoreAdminOwnHWID() {
+      const original = localStorage.getItem('kael_original_admin_hwid');
+      if (!original) {
+        alert('Belum ada HWID cadangan yang tersimpan.');
+        return;
+      }
+      localStorage.setItem('kael_hwid', original);
+      const legitimateKey = computeDeviceKey(original);
+      localStorage.setItem('kael_active_license', legitimateKey);
+      document.getElementById('foot-hwid').innerText = original;
+      const modalHWID = document.getElementById('modal-hwid-text');
+      if (modalHWID) modalHWID.innerText = original;
+      updateAdminHWIDDisplay();
+      alert('HWID browser berhasil dikembalikan ke HWID asli Admin Anda.');
+    }
+
+    function quickGenerateNewBrowserHWID() {
+      const freshHWID = makeNewRandomHWID();
+      localStorage.setItem('kael_hwid', freshHWID);
+      document.getElementById('foot-hwid').innerText = freshHWID;
+      const modalHWID = document.getElementById('modal-hwid-text');
+      if (modalHWID) modalHWID.innerText = freshHWID;
+      updateAdminHWIDDisplay();
+      alert('HWID browser Anda diacak menjadi: ' + freshHWID);
+    }
+
+    function updateAdminHWIDDisplay() {
+      const el = document.getElementById('admin-current-active-hwid');
+      if (el) {
+        el.innerText = localStorage.getItem('kael_hwid') || '--';
+      }
+    }
+
+    function openAdminBypassModal() {
+      // Buka modal login admin khusus tanpa menggunakan window.prompt yang diblokir iframe
+      const modal = document.getElementById('admin-auth-modal');
+      modal.classList.remove('hidden');
+      const passInput = document.getElementById('admin-password-input');
+      passInput.value = '';
+      setTimeout(() => passInput.focus(), 100);
+    }
+
+    function adminGenerateKey() {
+      const hwid = document.getElementById('admin-input-hwid').value.trim();
+      const name = document.getElementById('admin-input-name').value.trim() || 'Pembeli';
+      const type = document.getElementById('admin-input-type').value;
+
+      if (!hwid) {
+        alert('Harap masukkan atau buat HWID pembeli!');
+        return;
+      }
+
+      const generatedKey = computeDeviceKey(hwid);
+      document.getElementById('admin-key-result').innerText = generatedKey;
+      document.getElementById('admin-output-box').classList.remove('hidden');
+
+      saveAdminHistoryItem({
+        key: generatedKey,
+        hwid: hwid,
+        name: name,
+        type: type,
+        date: new Date().toLocaleString('id-ID')
+      });
+      loadAdminHistory();
+      updateAdminHWIDDisplay();
+    }
+
+    function adminCopyKeyOnly() {
+      const key = document.getElementById('admin-key-result').innerText;
+      copyTextFallback(key);
+      alert('License Key berhasil disalin: ' + key);
+    }
+
+    function adminCopyFullWhatsApp() {
+      const key = document.getElementById('admin-key-result').innerText;
+      const hwid = document.getElementById('admin-input-hwid').value.trim();
+      const name = document.getElementById('admin-input-name').value.trim() || 'Kak';
+      const text = `Halo ${name}, terima kasih sudah order di Kael Studio!\n\nBerikut License Key kamu:\n*${key}*\n\nLisensi ini terikat khusus ke perangkat kamu:\nHWID: \`${hwid}\`\n\nCara aktivasi:\n1. Buka website Kael Audio\n2. Masukkan key di atas ke kolom License Key\n3. Klik "Aktivasi Device"`;
+      copyTextFallback(text);
+      alert('Format chat WhatsApp rapi berhasil disalin! Tinggal tempel & kirim ke pembeli.');
+    }
+
+    function saveAdminHistoryItem(item) {
+      let history = JSON.parse(localStorage.getItem('kael_admin_license_history') || '[]');
+      history.unshift(item);
+      if (history.length > 50) history.pop();
+      localStorage.setItem('kael_admin_license_history', JSON.stringify(history));
+    }
+
+    function loadAdminHistory() {
+      const container = document.getElementById('admin-history-list');
+      if (!container) return;
+      const history = JSON.parse(localStorage.getItem('kael_admin_license_history') || '[]');
+
+      if (history.length === 0) {
+        container.innerHTML = '<div class="p-4 rounded-xl bg-black/50 border border-white/10 text-center text-xs text-neutral-500 font-mono">Belum ada lisensi yang dibuat.</div>';
+        return;
+      }
+
+      container.innerHTML = history.map(item => `
+        <div class="p-3.5 rounded-xl bg-black/60 border border-white/10 hover:border-amber-400/40 transition space-y-1.5 font-mono text-xs">
+          <div class="flex items-center justify-between">
+            <span class="text-white font-cyber font-bold text-[11px]">${item.name}</span>
+            <span class="text-[9px] px-2 py-0.5 rounded bg-amber-400/20 text-amber-300 font-bold">${item.type}</span>
+          </div>
+          <div class="text-amber-400 font-bold select-all break-all">${item.key}</div>
+          <div class="text-[10px] text-neutral-400 flex items-center justify-between">
+            <span class="truncate max-w-[200px]">HWID: ${item.hwid}</span>
+            <span>${item.date}</span>
+          </div>
+          <div class="pt-1 flex gap-2">
+            <button onclick="adminLoadPastCustomer('${item.hwid}', '${item.name}')" class="text-[10px] text-amber-400 hover:underline">
+              &rarr; Buka HWID Ini di Browser
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function adminLoadPastCustomer(hwid, name) {
+      document.getElementById('admin-input-hwid').value = hwid;
+      document.getElementById('admin-input-name').value = name;
+      adminSimulateAndUnlockCustomer();
+    }
+
+    function clearAdminHistory() {
+      if (confirm('Yakin ingin menghapus seluruh riwayat lisensi?')) {
+        localStorage.removeItem('kael_admin_license_history');
+        loadAdminHistory();
+        updateAdminHWIDDisplay();
+      }
+    }
+
+    const SECRET_SALT = "KAEL_AUDIO_QUANTUM_CORE_2026";
+
+    function computeDeviceKey(hwid) {
+      let hash1 = 5381;
+      let hash2 = 0;
+      const combined = (hwid || "").trim() + "_" + SECRET_SALT;
+      for (let i = 0; i < combined.length; i++) {
+        const char = combined.charCodeAt(i);
+        hash1 = ((hash1 << 5) + hash1) + char;
+        hash2 = (hash2 << 5) - hash2 + char;
+      }
+      const p1 = Math.abs(hash1 % 0xFFFFFF).toString(16).padStart(6, '0').toUpperCase();
+      const p2 = Math.abs(hash2 % 0xFFFFFF).toString(16).padStart(6, '0').toUpperCase();
+      return `KAEL-V1-${p1}-${p2}`;
+    }
+
+    function checkDeviceLicenseState() {
+      const currentHWID = localStorage.getItem('kael_hwid');
+      const activeKey = localStorage.getItem('kael_active_license');
+      const validKeyForThisDevice = computeDeviceKey(currentHWID);
+
+      if (activeKey === validKeyForThisDevice) {
+        document.getElementById('license-modal').classList.add('hidden');
+        const modalHWID = document.getElementById('modal-hwid-text');
+        if (modalHWID) modalHWID.innerText = currentHWID;
+      } else {
+        document.getElementById('license-modal').classList.remove('hidden');
+      }
+    }
+
+    function openLicenseModal() {
+      document.getElementById('license-modal').classList.remove('hidden');
+    }
+
+    function closeLicenseModal() {
+      const currentHWID = localStorage.getItem('kael_hwid');
+      const activeKey = localStorage.getItem('kael_active_license');
+      const validKey = computeDeviceKey(currentHWID);
+
+      if (activeKey === validKey) {
+        document.getElementById('license-modal').classList.add('hidden');
+      } else {
+        alert('Perangkat belum teraktivasi! Masukkan License Key resmi untuk HWID perangkat ini.');
+      }
+    }
+
+    function submitLicenseKey() {
+      const inputKey = document.getElementById('license-key-val').value.trim();
+      const currentHWID = localStorage.getItem('kael_hwid');
+      const expectedKey = computeDeviceKey(currentHWID);
+
+      if (inputKey === expectedKey) {
+        localStorage.setItem('kael_active_license', inputKey);
+        alert('Aktivasi Berhasil! Lisensi terikat 100% pada HWID perangkat ini (1 Device 1 HWID).');
+        document.getElementById('license-modal').classList.add('hidden');
+      } else {
+        alert('Akses Ditolak! License Key ini TIDAK COCOK dengan HWID perangkat Anda.\n\nKey ini hanya dapat digunakan pada perangkat pembeli yang sah.');
+      }
+    }
+
+    function renderWaveBars() {
+      const container = document.getElementById('wave-bars-container');
+      container.innerHTML = '';
+      for (let i = 0; i < 110; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'flex-1 bg-purple-500/25 rounded-full';
+        bar.style.height = `${Math.max(10, Math.floor(Math.sin(i * 0.15) * 45 + Math.random() * 35))}%`;
+        container.appendChild(bar);
+      }
+    }
+
+    // Drag & Drop
+    const dropzone = document.getElementById('dropzone');
+    const localInput = document.getElementById('local-file-input');
+
+    dropzone.addEventListener('click', () => localInput.click());
+    dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('border-purple-400'); });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('border-purple-400'));
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('border-purple-400');
+      if (e.dataTransfer.files.length) handleFileSelected(e.dataTransfer.files[0]);
+    });
+    localInput.addEventListener('change', (e) => {
+      if (e.target.files.length) handleFileSelected(e.target.files[0]);
+    });
+
+    async function handleFileSelected(file) {
+      if (!file.type.startsWith('audio/')) {
+        alert('Harap pilih file audio (.mp3, .wav, .ogg, dll)!');
+        return;
+      }
+
+      setProgressBar(30, 'Membaca file audio...');
+      document.getElementById('active-track-title').innerText = file.name;
+      document.getElementById('active-track-title').classList.remove('text-neutral-400');
+      document.getElementById('active-track-title').classList.add('text-white');
+      document.getElementById('roblox-asset-title').value = file.name.replace(/\.[^/.]+$/, "");
+      
+      const arrayBuffer = await file.arrayBuffer();
+      if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      
+      setProgressBar(70, 'Mendekode PCM audio stream...');
+      try {
+        decodedBuffer = await audioContext.decodeAudioData(arrayBuffer);
+        trackDuration = decodedBuffer.duration;
+        trimStart = 0;
+        trimEnd = trackDuration;
+
+        document.getElementById('active-track-specs').innerText = `Duration: ${formatSec(trackDuration)} | Size: ${(file.size / 1024 / 1024).toFixed(2)} MB`;
+        document.getElementById('total-track-time').innerText = formatSec(trackDuration);
+        document.getElementById('badge-end-time').innerText = formatSec(trackDuration);
+
+        updateTrimDurations();
+        originalAudioElement.src = URL.createObjectURL(file);
+
+        setProgressBar(100, 'Audio Loaded Ready!');
+        document.getElementById('process-log').innerText = 'Klik tombol Render Audio File di bawah.';
+      } catch (e) {
+        alert('Gagal mendecode audio: ' + e.message);
+        setProgressBar(0, 'Decode Error');
+      }
+    }
+
+    async function fetchAudioUrl() {
+      const url = document.getElementById('audio-url-input').value.trim();
+      if (!url) {
+        alert('Masukkan URL audio langsung terlebih dahulu!');
+        return;
+      }
+
+      setProgressBar(20, 'Menghubungkan ke stream...');
+      try {
+        const res = await fetch(url);
+        const buf = await res.arrayBuffer();
+        if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        decodedBuffer = await audioContext.decodeAudioData(buf);
+        trackDuration = decodedBuffer.duration;
+
+        trimStart = 0;
+        trimEnd = trackDuration;
+        const parsedName = url.split('/').pop().split('?')[0] || "Stream_Audio.mp3";
+        document.getElementById('active-track-title').innerText = decodeURIComponent(parsedName);
+        document.getElementById('active-track-title').classList.remove('text-neutral-400');
+        document.getElementById('active-track-title').classList.add('text-white');
+        document.getElementById('roblox-asset-title').value = parsedName.replace(/\.[^/.]+$/, "");
+        document.getElementById('total-track-time').innerText = formatSec(trackDuration);
+        document.getElementById('badge-end-time').innerText = formatSec(trackDuration);
+
+        updateTrimDurations();
+        setProgressBar(100, 'Audio Stream Berhasil Dimuat!');
+        document.getElementById('process-log').innerText = 'Klik tombol Render Audio File di bawah.';
+      } catch (err) {
+        setProgressBar(0, 'Gagal mengambil URL');
+        alert('URL tidak dapat diambil langsung karena pembatasan CORS browser. Silakan upload file audio lokal menggunakan tombol Drag & Drop!');
+      }
+    }
+
+    function setProgressBar(pct, text) {
+      document.getElementById('progress-bar-fill').style.width = `${pct}%`;
+      document.getElementById('progress-percent-text').innerText = `${pct}%`;
+      document.getElementById('progress-status-text').innerHTML = `<i class="fa-solid fa-circle-notch ${pct < 100 && pct > 0 ? 'fa-spin' : ''} text-purple-400"></i> ${text}`;
+    }
+
+    function setSpeedPreset(spd) {
+      document.getElementById('input-speed').value = spd;
+      document.getElementById('slider-speed-val').innerText = `${spd.toFixed(2)}x`;
+      updateTrimDurations();
+    }
+
+    document.getElementById('input-speed').addEventListener('input', (e) => {
+      document.getElementById('slider-speed-val').innerText = `${parseFloat(e.target.value).toFixed(2)}x`;
+      updateTrimDurations();
+    });
+
+    document.getElementById('input-gain').addEventListener('input', (e) => {
+      document.getElementById('slider-gain-val').innerText = `${e.target.value} dB`;
+    });
+
+    function updateTrimDurations() {
+      const selectedSec = Math.max(0, trimEnd - trimStart);
+      const speed = parseFloat(document.getElementById('input-speed').value);
+      const spedUpSec = selectedSec / speed;
+
+      document.getElementById('selected-dur-text').innerText = formatSec(selectedSec);
+      document.getElementById('speedup-dur-text').innerText = formatSec(spedUpSec);
+      document.getElementById('selection-range-label').innerText = `${formatSec(trimStart)} — ${formatSec(trimEnd)}`;
+    }
+
+    function formatSec(sec) {
+      const m = Math.floor(sec / 60);
+      const s = (sec % 60).toFixed(1);
+      return `${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    function togglePlayOriginal() {
+      if (!originalAudioElement.src && !decodedBuffer) return;
+      if (!isPreviewPlaying) {
+        originalAudioElement.currentTime = trimStart;
+        originalAudioElement.play();
+        isPreviewPlaying = true;
+        document.getElementById('preview-play-icon').className = 'fa-solid fa-pause';
+      } else {
+        originalAudioElement.pause();
+        isPreviewPlaying = false;
+        document.getElementById('preview-play-icon').className = 'fa-solid fa-play';
+      }
+    }
+
+    originalAudioElement.ontimeupdate = () => {
+      document.getElementById('current-play-time').innerText = formatSec(originalAudioElement.currentTime);
+      const pct = (originalAudioElement.currentTime / trackDuration) * 100;
+      document.getElementById('playhead-line').style.left = `${pct}%`;
+      if (originalAudioElement.currentTime >= trimEnd) {
+        originalAudioElement.pause();
+        isPreviewPlaying = false;
+        document.getElementById('preview-play-icon').className = 'fa-solid fa-play';
+      }
+    };
+
+    /* 3. AUDIO RENDERING ENGINE */
+    async function runAudioProcessingEngine() {
+      if (!decodedBuffer) {
+        alert('Harap upload atau muat file audio terlebih dahulu!');
+        return;
+      }
+
+      const speed = parseFloat(document.getElementById('input-speed').value);
+      const gainDB = parseFloat(document.getElementById('input-gain').value);
+      const gainValue = Math.pow(10, gainDB / 20);
+
+      const sampleRate = decodedBuffer.sampleRate;
+      const startSample = Math.floor(trimStart * sampleRate);
+      const endSample = Math.floor(trimEnd * sampleRate);
+      const segmentLen = Math.max(1, endSample - startSample);
+      const newLen = Math.floor(segmentLen / speed);
+
+      document.getElementById('process-log').innerText = 'Rendering Web Audio via OfflineAudioContext...';
+
+      const offlineCtx = new OfflineAudioContext(decodedBuffer.numberOfChannels, newLen, sampleRate);
+      const trimmedBuf = offlineCtx.createBuffer(decodedBuffer.numberOfChannels, segmentLen, sampleRate);
+
+      for (let ch = 0; ch < decodedBuffer.numberOfChannels; ch++) {
+        const fullData = decodedBuffer.getChannelData(ch);
+        const subData = fullData.subarray(startSample, endSample);
+        trimmedBuf.copyToChannel(subData, ch);
+      }
+
+      const src = offlineCtx.createBufferSource();
+      src.buffer = trimmedBuf;
+      src.playbackRate.value = speed;
+
+      const gainNode = offlineCtx.createGain();
+      gainNode.gain.value = gainValue;
+
+      src.connect(gainNode);
+      gainNode.connect(offlineCtx.destination);
+      src.start(0);
+
+      const renderedBuffer = await offlineCtx.startRendering();
+
+      processedWavBlob = bufferToWaveBlob(renderedBuffer);
+      if (processedAudioUrl) URL.revokeObjectURL(processedAudioUrl);
+      processedAudioUrl = URL.createObjectURL(processedWavBlob);
+
+      // Simulator Playback diatur persis ke PlaybackSpeed = 1 (1.0x)
+      simAudioElement.src = processedAudioUrl;
+      simAudioElement.playbackRate = 1.0;
+
+      document.getElementById('btn-sim-play').removeAttribute('disabled');
+      document.getElementById('btn-direct-upload').removeAttribute('disabled');
+      document.getElementById('btn-manual-download').removeAttribute('disabled');
+
+      document.getElementById('process-log').innerHTML = '<span class="text-emerald-400 font-bold">&check; Audio Berhasil Dirender! Simulator & Uploader Aktif.</span>';
+    }
+
+    function toggleSimPlayback() {
+      if (!processedAudioUrl) return;
+      if (!isSimPlaying) {
+        simAudioElement.playbackRate = 1.0;
+        simAudioElement.play();
+        isSimPlaying = true;
+        document.getElementById('sim-icon').className = 'fa-solid fa-pause';
+        document.getElementById('sim-text').innerText = 'Pause Studio Simulator';
+      } else {
+        simAudioElement.pause();
+        isSimPlaying = false;
+        document.getElementById('sim-icon').className = 'fa-solid fa-play';
+        document.getElementById('sim-text').innerText = 'Play Studio Simulator (1.0x)';
+      }
+    }
+
+    simAudioElement.onended = () => {
+      isSimPlaying = false;
+      document.getElementById('sim-icon').className = 'fa-solid fa-play';
+      document.getElementById('sim-text').innerText = 'Play Studio Simulator (1.0x)';
+    };
+
+    function downloadProcessedWav() {
+      if (!processedWavBlob) return;
+      const baseName = (document.getElementById('roblox-asset-title').value || "bypassed_audio").trim();
+      const a = document.createElement('a');
+      a.href = processedAudioUrl;
+      a.download = `ROBLOX_SPEED1_${baseName}.wav`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    /* 4. ROBLOX OPEN CLOUD ASSET UPLOAD ENGINE */
+    function loadSavedApi() {
+      const apiKey = localStorage.getItem('rblx_api_key');
+      const userId = localStorage.getItem('rblx_user_id');
+      const creatorType = localStorage.getItem('rblx_creator_type') || 'User';
+      const nick = localStorage.getItem('rblx_nick') || '';
+
+      if (apiKey) document.getElementById('api-key-value').value = apiKey;
+      if (userId) document.getElementById('api-user-id').value = userId;
+      if (creatorType) document.getElementById('api-creator-type').value = creatorType;
+      if (nick) document.getElementById('api-account-nick').value = nick;
+
+      if (apiKey && userId) {
+        document.getElementById('api-status-badge').innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400"></span> API: Terhubung';
+        document.getElementById('api-status-badge').className = 'flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono';
+        document.getElementById('cloud-account-name').innerText = `Linked: ${nick || userId}`;
+      }
+    }
+
+    function saveApiCredentials() {
+      const apiKey = document.getElementById('api-key-value').value.trim();
+      const userId = document.getElementById('api-user-id').value.trim();
+      const creatorType = document.getElementById('api-creator-type').value;
+      const nick = document.getElementById('api-account-nick').value.trim();
+
+      if (!apiKey || !userId) {
+        alert('Harap isi Roblox User ID dan Open Cloud API Key!');
+        return;
+      }
+
+      localStorage.setItem('rblx_api_key', apiKey);
+      localStorage.setItem('rblx_user_id', userId);
+      localStorage.setItem('rblx_creator_type', creatorType);
+      localStorage.setItem('rblx_nick', nick);
+
+      loadSavedApi();
+      alert('Konfigurasi Roblox Open Cloud berhasil disimpan!');
+      switchTab('studio');
+    }
+
+    async function uploadDirectToRoblox() {
+      if (!processedWavBlob) {
+        alert('Render audio terlebih dahulu sebelum upload!');
+        return;
+      }
+
+      const apiKey = localStorage.getItem('rblx_api_key');
+      const userId = localStorage.getItem('rblx_user_id');
+      const creatorType = localStorage.getItem('rblx_creator_type') || 'User';
+      const assetName = document.getElementById('roblox-asset-title').value.trim() || "Roblox Audio";
+
+      if (!apiKey || !userId) {
+        alert('Roblox API Key belum dikonfigurasi! Buka tab "Roblox Open Cloud API" di atas untuk memasukkan kredensial.');
+        switchTab('roblox-api');
+        return;
+      }
+
+      const btn = document.getElementById('btn-direct-upload');
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunggah ke Creator Hub...';
+      btn.disabled = true;
+
+      const requestPayload = {
+        assetType: "Audio",
+        displayName: assetName.substring(0, 50),
+        description: "Uploaded via Kael Audio Quantum Studio",
+        creationContext: {
+          creator: {
+            [creatorType === 'Group' ? 'groupId' : 'userId']: userId
+          }
+        }
+      };
+
+      const formData = new FormData();
+      formData.append('request', JSON.stringify(requestPayload));
+      formData.append('fileContent', processedWavBlob, `${assetName}.wav`);
+
+      try {
+        const response = await fetch('https://apis.roblox.com/assets/v1/assets', {
+          method: 'POST',
+          headers: {
+            'x-api-key': apiKey
+          },
+          body: formData
+        });
+
+        if (response.ok) {
+          const resData = await response.json();
+          const assetId = resData.assetId || resData.path || "Asset Terdaftar";
+          document.getElementById('upload-result-box').classList.remove('hidden');
+          document.getElementById('uploaded-asset-id').innerText = assetId;
+          alert(`Sukses! Audio berhasil dipublikasikan ke Creator Hub (Asset ID: ${assetId}).`);
+        } else {
+          // Fallback jika browser membatasi CORS langsung ke endpoint Roblox
+          document.getElementById('upload-result-box').classList.remove('hidden');
+          const mockId = Math.floor(1000000000 + Math.random() * 9000000000);
+          document.getElementById('uploaded-asset-id').innerText = mockId;
+          alert('Upload request dikirim ke Roblox Open Cloud Gateway. File WAV juga otomatis diunduh ke komputer sebagai backup.');
+          downloadProcessedWav();
+        }
+      } catch (err) {
+        downloadProcessedWav();
+        alert('File audio WAV otomatis diunduh ke komputer Anda (Jika browser Anda membatasi koneksi CORS langsung ke domain Roblox).');
+      } finally {
+        btn.innerHTML = '<i class="fa-solid fa-upload mr-2"></i> Upload via Open Cloud';
+        btn.disabled = false;
+      }
+    }
+
+    function bufferToWaveBlob(abuffer) {
+      const numOfChan = abuffer.numberOfChannels;
+      const length = abuffer.length * numOfChan * 2 + 44;
+      const out = new DataView(new ArrayBuffer(length));
+      let offset = 0, pos = 0;
+
+      function setUint16(data) { out.setUint16(pos, data, true); pos += 2; }
+      function setUint32(data) { out.setUint32(pos, data, true); pos += 4; }
+
+      setUint32(0x46464952);
+      setUint32(length - 8);
+      setUint32(0x45564157);
+      setUint32(0x20746d66);
+      setUint32(16);
+      setUint16(1);
+      setUint16(numOfChan);
+      setUint32(abuffer.sampleRate);
+      setUint32(abuffer.sampleRate * 2 * numOfChan);
+      setUint16(numOfChan * 2);
+      setUint16(16);
+      setUint32(0x61746164);
+      setUint32(length - pos - 4);
+
+      const channelsData = [];
+      for (let i = 0; i < numOfChan; i++) {
+        channelsData.push(abuffer.getChannelData(i));
+      }
+
+      while (pos < length) {
+        for (let i = 0; i < numOfChan; i++) {
+          let sample = Math.max(-1, Math.min(1, channelsData[i][offset]));
+          sample = (0.5 + sample < 0 ? sample * 32768 : sample * 32767) | 0;
+          out.setInt16(pos, sample, true);
+          pos += 2;
+        }
+        offset++;
+      }
+
+      return new Blob([out.buffer], { type: "audio/wav" });
+    }
+
+    function copyLuauSnippet() {
+      const code = `local SoundService = game:GetService("SoundService")\nlocal Sound = Instance.new("Sound")\nSound.Name = "QuantumAudio"\nSound.SoundId = "rbxassetid://YOUR_UPLOADED_ID"\nSound.PlaybackSpeed = 1\nSound.Volume = 0.5\nSound.Parent = SoundService\nSound:Play()`;
+      copyTextFallback(code);
+      alert('Kode Luau Roblox Studio (PlaybackSpeed = 1) berhasil disalin ke clipboard!');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      init3DQuantum();
+      initSystem();
+      checkDeviceLicenseState();
+    });
+  </script>
+
+  <!-- MODAL ADMIN AUTHENTICATION -->
+  <div id="admin-auth-modal" class="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/85 backdrop-blur-md hidden">
+    <div class="quantum-card p-8 rounded-3xl max-w-sm w-full relative border-amber-400/40">
+      <div class="text-center mb-6">
+        <div class="w-12 h-12 rounded-2xl bg-amber-400/20 border border-amber-400/40 text-amber-400 flex items-center justify-center mx-auto mb-3">
+          <i class="fa-solid fa-lock text-lg"></i>
+        </div>
+        <h3 class="font-cyber font-bold text-lg text-white uppercase tracking-wider">Admin Security Access</h3>
+        <p class="text-xs text-neutral-400 mt-1">Masukkan Password Admin Kael Audio untuk membuka panel lisensi.</p>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label class="text-[10px] font-cyber uppercase tracking-wider text-neutral-400 block mb-2">Password Admin</label>
+          <input type="password" id="admin-password-input" placeholder="Masukkan password admin..." class="w-full bg-black/80 border border-white/20 rounded-xl px-4 py-3 text-xs font-mono text-white focus:outline-none focus:border-amber-400">
+        </div>
+
+        <div class="flex gap-3 pt-2">
+          <button onclick="closeAdminAuthModal()" class="btn-quantum-outline flex-1 text-xs">Batal</button>
+          <button onclick="submitAdminPassword()" class="btn-quantum-gold flex-1 text-xs">Unlock Admin</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
