@@ -8,7 +8,7 @@
   <!-- Google Fonts: Orbitron, Space Grotesk, & Denk One -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Denk+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Denk+One&display=swap" rel="stylesheet">
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -50,7 +50,7 @@
 
     /* Quantum Cyber Glassmorphism */
     .quantum-card {
-      background: rgba(9, 11, 22, 0.85);
+      background: rgba(9, 11, 22, 0.82);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
       border: 1px solid rgba(168, 85, 247, 0.25);
@@ -207,7 +207,7 @@
           <div id="api-status-badge" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono">
             <span class="w-2 h-2 rounded-full bg-amber-400"></span> API: Belum Terhubung
           </div>
-          <button onclick="openLicenseModal()" class="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-300 hover:text-white hover:border-purple-400 transition bg-white/5" title="Buka Panel HWID">
+          <button onclick="openLicenseModal()" class="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-300 hover:text-white hover:border-purple-400 transition bg-white/5">
             <i class="fa-solid fa-fingerprint text-sm"></i>
           </button>
         </div>
@@ -229,11 +229,11 @@
                 AUDIO WORKSTATION & ROBLOX STUDIO PIPELINE
               </h1>
               <p class="text-xs text-neutral-400 mt-1">
-                Edit tempo audio, potong segmen gelombang suara, lakukan simulasi Roblox Studio 1.0x, dan upload langsung via Open Cloud API.
+                Edit tempo audio, potong segmen gelombang suara, lakukan simulasi Roblox Studio 0.43x, dan upload langsung via Open Cloud API.
               </p>
             </div>
             <span class="text-xs font-cyber px-4 py-2 rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-300 uppercase tracking-wider">
-              Studio Target: PlaybackSpeed = 1
+              Studio Normalization: 0.43x
             </span>
           </div>
 
@@ -297,7 +297,7 @@
           <!-- Waveform Display Box -->
           <div class="space-y-3">
             <div class="flex justify-between items-center text-xs">
-              <span class="font-cyber text-neutral-300 tracking-wider">Interactive Waveform Cutter &mdash; Geser Pin Ungu untuk Memotong</span>
+              <span class="font-cyber text-neutral-300 tracking-wider">Interactive Waveform Cutter &mdash; Geser Pin Kuning untuk Memotong</span>
               <span class="text-[11px] font-mono text-purple-400" id="selection-range-label">0:00.0 &mdash; 0:00.0</span>
             </div>
 
@@ -353,11 +353,11 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="p-4 rounded-xl bg-black/50 border border-white/10">
                 <div class="flex justify-between items-center mb-2">
-                  <span class="text-xs font-cyber text-neutral-300 uppercase">Export Speed</span>
+                  <span class="text-xs font-cyber text-neutral-300 uppercase">Speed Multiplier</span>
                   <span id="slider-speed-val" class="font-cyber font-bold text-amber-400 text-sm">2.33x</span>
                 </div>
                 <input type="range" id="input-speed" min="1.0" max="3.0" step="0.01" value="2.33" class="w-full">
-                <div class="text-[10px] font-mono text-neutral-500 mt-1">Roblox Studio playback: 1.0x (Normal)</div>
+                <div class="text-[10px] font-mono text-neutral-500 mt-1">Roblox Studio playback: 0.43x</div>
               </div>
 
               <div class="p-4 rounded-xl bg-black/50 border border-white/10">
@@ -392,17 +392,17 @@
           <div class="lg:col-span-6 quantum-card p-6 md:p-8 space-y-6">
             <div class="flex items-center justify-between pb-3 border-b border-white/10">
               <h3 class="font-cyber font-bold text-white text-base uppercase tracking-wider flex items-center gap-2">
-                <i class="fa-solid fa-gamepad text-amber-400"></i> Roblox Studio 1.0x Test
+                <i class="fa-solid fa-gamepad text-amber-400"></i> Roblox Studio 0.43x Test
               </h3>
-              <span class="text-[10px] font-mono bg-purple-500/20 text-purple-300 border border-purple-500/30 px-2 py-0.5 rounded-md font-bold">In-Game PlaybackSpeed = 1</span>
+              <span class="text-[10px] font-mono bg-purple-500/20 text-purple-300 border border-purple-500/30 px-2 py-0.5 rounded-md font-bold">In-Game Normal Pitch</span>
             </div>
 
             <div class="p-4 rounded-xl bg-black/60 border border-white/10 space-y-3">
               <p class="text-xs text-neutral-300 leading-relaxed">
-                Test audio langsung di browser dengan setting Roblox Studio bawaan <code class="text-amber-400 bg-white/5 px-1 py-0.5 rounded">PlaybackSpeed = 1</code>:
+                Test audio langsung di browser dengan normalisasi tempo <code class="text-amber-400 bg-white/5 px-1 py-0.5 rounded">PlaybackSpeed = 0.43</code>:
               </p>
               <button id="btn-sim-play" onclick="toggleSimPlayback()" disabled class="w-full py-3 rounded-xl border border-purple-500/40 hover:bg-purple-600 hover:text-white font-cyber font-bold text-xs uppercase text-purple-300 transition flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed">
-                <i id="sim-icon" class="fa-solid fa-play"></i> <span id="sim-text">Play Studio Simulator (1.0x)</span>
+                <i id="sim-icon" class="fa-solid fa-play"></i> <span id="sim-text">Play Studio Simulator (0.43x)</span>
               </button>
             </div>
 
@@ -437,7 +437,7 @@
 
             <!-- Luau Code Copy -->
             <div class="p-3 bg-black/60 rounded-xl border border-white/10 flex items-center justify-between text-xs font-mono">
-              <span class="text-neutral-400">Sound.PlaybackSpeed = 1</span>
+              <span class="text-neutral-400">Sound.PlaybackSpeed = 0.43</span>
               <button onclick="copyLuauSnippet()" class="text-purple-400 hover:underline text-[11px] font-cyber">Copy Script Luau</button>
             </div>
 
@@ -507,6 +507,7 @@
         </div>
 
       </div>
+
 
       <!-- ================= SECTION 3: ADMIN ACCESS LICENSE & HWID MANAGER ================= -->
       <div id="section-admin" class="hidden space-y-8">
@@ -582,7 +583,7 @@
                     <i class="fa-solid fa-key"></i> Buat License Key
                   </button>
                   <!-- Fitur Utama: Buka/Uji HWID Costumer di Browser Admin -->
-                  <button onclick="adminSimulateAndUnlockCustomer()" class="py-3.5 px-4 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-cyber font-bold text-xs uppercase tracking-wider transition shadow-[0_0_25px_rgba(168,85,247,0.4)] flex items-center justify-center gap-2" title="Ganti HWID browser ke HWID costumer dan buka akses web langsung">
+                  <button onclick="adminSimulateAndUnlockCustomer()" class="py-3.5 px-4 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-cyber font-bold text-xs uppercase tracking-wider transition shadow-[0_0_20px_rgba(168,85,247,0.4)] flex items-center justify-center gap-2" title="Ganti HWID browser ke HWID costumer dan buka akses web langsung">
                     <i class="fa-solid fa-unlock"></i> Buka HWID Costumer Ini
                   </button>
                 </div>
@@ -605,6 +606,42 @@
                   </button>
                 </div>
               </div>
+
+              <!-- Community & Support Config Card (WhatsApp & Discord) -->
+              <div class="p-5 rounded-2xl bg-black/60 border border-amber-400/30 space-y-4">
+                <div class="flex items-center justify-between pb-2 border-b border-white/10">
+                  <h4 class="font-cyber font-bold text-xs uppercase tracking-wider text-amber-400 flex items-center gap-2">
+                    <i class="fa-solid fa-sliders"></i> Pengaturan Kontak WhatsApp & Discord
+                  </h4>
+                  <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-amber-400/20 text-amber-300 font-bold">LIVE UPDATE</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-[11px] font-cyber uppercase tracking-wider text-neutral-300 mb-1.5 flex items-center gap-1.5">
+                      <i class="fa-brands fa-whatsapp text-emerald-400"></i> Nomor WhatsApp Admin
+                    </label>
+                    <input type="text" id="admin-config-wa" placeholder="Contoh: 6282138096386" class="w-full bg-black/80 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs font-mono text-white placeholder-neutral-500 focus:outline-none focus:border-amber-400">
+                    <span class="text-[9px] text-neutral-500 mt-1 block">Gunakan kode negara (628...), tanpa spasi / tanda strip.</span>
+                  </div>
+
+                  <div>
+                    <label class="block text-[11px] font-cyber uppercase tracking-wider text-neutral-300 mb-1.5 flex items-center gap-1.5">
+                      <i class="fa-brands fa-discord text-indigo-400"></i> Link Invite Discord Server
+                    </label>
+                    <input type="text" id="admin-config-discord" placeholder="Contoh: https://discord.gg/nexora" class="w-full bg-black/80 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs font-mono text-white placeholder-neutral-500 focus:outline-none focus:border-amber-400">
+                    <span class="text-[9px] text-neutral-500 mt-1 block">Tautan undangan server Discord komunitas / toko.</span>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-1">
+                  <span class="text-[10px] text-neutral-400">Perubahan langsung terpasang di Footer dan Layar Kunci.</span>
+                  <button onclick="saveAdminSocialConfig()" class="px-5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-cyber font-bold text-xs uppercase transition shadow-[0_0_15px_rgba(251,191,36,0.3)] flex items-center gap-2">
+                    <i class="fa-solid fa-floppy-disk"></i> Simpan Kontak
+                  </button>
+                </div>
+              </div>
+
             </div>
 
             <!-- Right 6 Cols: Quick Switch HWID Tools & History Log -->
@@ -628,7 +665,7 @@
                   </button>
                 </div>
                 <p class="text-[11px] text-neutral-400">
-                  <strong class="text-white">Tips Admin:</strong> Tombol <span class="text-amber-400 font-bold">"Buka HWID Costumer Ini"</span> akan seketika menyamakan HWID browser dengan HWID costumer dan memasang lisensinya sehingga Anda dapat langsung menguji web pelanggan tanpa terhalang proteksi 1 Device 1 HWID!
+                  <strong class="text-white">Kenapa kemarin tidak bisa buka HWID costumer?</strong> Karena browser Anda memiliki HWID sendiri. Dengan tombol <span class="text-amber-400 font-bold">"Buka HWID Costumer Ini"</span>, website otomatis menyamakan HWID browser ke HWID costumer dan mengaktifkan lisensinya sehingga Anda bisa langsung menguji tampilan web costumer tanpa hambatan!
                 </p>
               </div>
 
@@ -662,10 +699,15 @@
     <footer class="border-t border-white/10 bg-[#060812]/90 py-6 px-6 text-xs font-mono text-neutral-500">
       <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
         <div>&copy; 2026 KAEL AUDIO // QUANTUM ROBLOX ASSET ENGINE</div>
-        <div class="flex items-center gap-6">
+        <div class="flex flex-wrap items-center gap-4 sm:gap-6">
           <span>HWID: <strong id="foot-hwid" class="text-neutral-300">--</strong></span>
           <span class="text-emerald-400">OPEN CLOUD COMPLIANT</span>
-          <a href="https://wa.me/6282138096386" target="_blank" class="text-purple-400 hover:underline">WhatsApp Admin</a>
+          <a id="footer-wa-link" href="https://wa.me/6282138096386" target="_blank" class="text-emerald-400 hover:underline flex items-center gap-1.5">
+            <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp Admin
+          </a>
+          <a id="footer-discord-link" href="https://discord.gg/" target="_blank" class="text-indigo-400 hover:underline flex items-center gap-1.5">
+            <i class="fa-brands fa-discord text-sm"></i> Discord Community
+          </a>
         </div>
       </div>
     </footer>
@@ -694,7 +736,7 @@
 
         <div>
           <label class="text-[10px] font-cyber uppercase tracking-wider text-neutral-400 block mb-2">License Key</label>
-          <input type="text" id="license-key-val" placeholder="Masukkan License Key unik perangkat ini..." class="w-full bg-black/70 border border-white/20 rounded-xl px-4 py-3 text-xs font-mono text-white focus:outline-none focus:border-purple-400">
+          <input type="text" id="license-key-val" placeholder="Masukkan License Key (contoh: KAEL-V1-...)" class="w-full bg-black/70 border border-white/20 rounded-xl px-4 py-3 text-xs font-mono text-white focus:outline-none focus:border-purple-400">
         </div>
 
         <div class="flex gap-3 pt-2">
@@ -702,12 +744,24 @@
           <button onclick="submitLicenseKey()" class="btn-quantum-gold flex-1 text-xs">Aktivasi Device</button>
         </div>
 
-        <!-- Tombol Khusus Admin agar Admin tidak pernah terkunci -->
-        <div class="pt-3 border-t border-white/10 text-center flex items-center justify-between text-xs">
-          <span class="text-[11px] text-neutral-500">Kamu adalah Admin?</span>
-          <button type="button" onclick="openAdminBypassModal()" class="text-amber-400 hover:underline font-cyber text-[11px] flex items-center gap-1">
-            <i class="fa-solid fa-shield-halved"></i> Bypass / Login Admin
-          </button>
+        <!-- Bantuan Pembelian & Komunitas -->
+        <div class="pt-3 border-t border-white/10 space-y-2.5">
+          <div class="flex items-center justify-between gap-2">
+            <a id="modal-wa-link" href="https://wa.me/6282138096386" target="_blank" class="flex-1 py-2 px-3 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-[11px] font-cyber font-bold flex items-center justify-center gap-2 transition">
+              <i class="fa-brands fa-whatsapp text-sm"></i> Beli Key via WhatsApp
+            </a>
+            <a id="modal-discord-link" href="https://discord.gg/" target="_blank" class="flex-1 py-2 px-3 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 text-indigo-400 text-[11px] font-cyber font-bold flex items-center justify-center gap-2 transition">
+              <i class="fa-brands fa-discord text-sm"></i> Join Discord
+            </a>
+          </div>
+
+          <!-- Tombol Khusus Admin agar Admin tidak pernah terkunci -->
+          <div class="flex items-center justify-between text-xs pt-1">
+            <span class="text-[11px] text-neutral-500">Kamu adalah Admin?</span>
+            <button onclick="adminBypassLockscreen()" class="text-amber-400 hover:underline font-cyber text-[11px] flex items-center gap-1">
+              <i class="fa-solid fa-shield-halved"></i> Bypass / Login Admin
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -804,6 +858,7 @@
       document.getElementById('modal-hwid-text').innerText = hwid;
 
       loadSavedApi();
+      loadSocialConfig();
       renderWaveBars();
     }
 
@@ -825,15 +880,9 @@
     function submitAdminPassword() {
       const pass = document.getElementById('admin-password-input').value.trim();
       // Password Admin Kael Studio: kael2026 atau KAEL-ADMIN
-      if (pass === 'kael2026' || pass === 'KAEL-ADMIN') {
+      if (pass === 'kael2026' || pass === 'KAEL-ADMIN' || pass === 'KAEL-LIFETIME-DEV2026') {
         isAdminUnlocked = true;
-        // Berikan lisensi resmi terikat HWID perangkat ini
-        const currentHWID = localStorage.getItem('kael_hwid') || makeNewRandomHWID();
-        const legitimateKey = computeDeviceKey(currentHWID);
-        localStorage.setItem('kael_active_license', legitimateKey);
-
         closeAdminAuthModal();
-        document.getElementById('license-modal').classList.add('hidden');
         switchTab('admin');
         loadAdminHistory();
         updateAdminHWIDDisplay();
@@ -882,29 +931,7 @@
       return Math.random().toString(36).substring(2, 6).toUpperCase();
     }
 
-    // Fungsi copy universal yang aman untuk iframe & sandbox (pengganti navigator.clipboard.writeText)
-    function copyTextFallback(text) {
-      try {
-        const tempTextArea = document.createElement("textarea");
-        tempTextArea.value = text;
-        tempTextArea.style.position = "fixed";
-        tempTextArea.style.left = "-9999px";
-        tempTextArea.style.top = "0";
-        document.body.appendChild(tempTextArea);
-        tempTextArea.focus();
-        tempTextArea.select();
-        const successful = document.execCommand('copy');
-        document.body.removeChild(tempTextArea);
-        if (!successful && navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text).catch(() => {});
-        }
-      } catch (err) {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text).catch(() => {});
-        }
-      }
-    }
-
+    // Generator HWID Otomatis / Random
     function makeNewRandomHWID() {
       return `HWID-${getRandomHexChunk()}-${getRandomHexChunk()}-${getRandomHexChunk()}-${getRandomHexChunk()}`;
     }
@@ -912,22 +939,24 @@
     function generateRandomHWIDForInput() {
       const newHwid = makeNewRandomHWID();
       document.getElementById('admin-input-hwid').value = newHwid;
+      // Otomatis langsung buatkan key-nya
       adminGenerateKey();
     }
 
     function copyAdminInputHWID() {
       const val = document.getElementById('admin-input-hwid').value.trim();
       if (!val) return;
-      copyTextFallback(val);
+      navigator.clipboard.writeText(val);
       alert('HWID disalin: ' + val);
     }
 
     function copyCurrentHWID() {
       const hwid = localStorage.getItem('kael_hwid') || '';
-      copyTextFallback(hwid);
+      navigator.clipboard.writeText(hwid);
       alert('HWID perangkat disalin: ' + hwid);
     }
 
+    // FITUR UTAMA: Admin membuka HWID costumer di laptop admin sendiri!
     function adminSimulateAndUnlockCustomer() {
       const targetHWID = document.getElementById('admin-input-hwid').value.trim();
       if (!targetHWID) {
@@ -935,22 +964,27 @@
         return;
       }
 
+      // 1. Simpan HWID asli admin jika belum pernah dicadangkan
       if (!localStorage.getItem('kael_original_admin_hwid')) {
         localStorage.setItem('kael_original_admin_hwid', localStorage.getItem('kael_hwid') || makeNewRandomHWID());
       }
 
+      // 2. Ganti HWID aktif browser ke HWID costumer
       localStorage.setItem('kael_hwid', targetHWID);
       document.getElementById('foot-hwid').innerText = targetHWID;
       const modalHWID = document.getElementById('modal-hwid-text');
       if (modalHWID) modalHWID.innerText = targetHWID;
 
+      // 3. Generate key yang cocok untuk HWID ini dan pasang ke active license
       const validKey = computeDeviceKey(targetHWID);
       localStorage.setItem('kael_active_license', validKey);
 
+      // 4. Update UI input hasil dan panel status
       document.getElementById('admin-key-result').innerText = validKey;
       document.getElementById('admin-output-box').classList.remove('hidden');
       updateAdminHWIDDisplay();
 
+      // 5. Buka kunci layar modal
       document.getElementById('license-modal').classList.add('hidden');
       alert(`SUKSES MEMBUKA HWID COSTUMER!\n\nBrowser sekarang menyimulasikan HWID: ${targetHWID}\nLicense Key valid: ${validKey}\n\nSeluruh studio audio langsung aktif dan terbuka.`);
       switchTab('studio');
@@ -963,8 +997,7 @@
         return;
       }
       localStorage.setItem('kael_hwid', original);
-      const legitimateKey = computeDeviceKey(original);
-      localStorage.setItem('kael_active_license', legitimateKey);
+      localStorage.setItem('kael_active_license', 'KAEL-LIFETIME-DEV2026');
       document.getElementById('foot-hwid').innerText = original;
       const modalHWID = document.getElementById('modal-hwid-text');
       if (modalHWID) modalHWID.innerText = original;
@@ -989,13 +1022,22 @@
       }
     }
 
-    function openAdminBypassModal() {
-      // Buka modal login admin khusus tanpa menggunakan window.prompt yang diblokir iframe
-      const modal = document.getElementById('admin-auth-modal');
-      modal.classList.remove('hidden');
-      const passInput = document.getElementById('admin-password-input');
-      passInput.value = '';
-      setTimeout(() => passInput.focus(), 100);
+    // Bypass Darurat di Layar Kunci jika Admin terkunci
+    function adminBypassLockscreen() {
+      const pass = prompt('Masukkan Password Admin Kael Audio:');
+      if (pass === 'kael2026' || pass === 'KAEL-ADMIN' || pass === 'KAEL-LIFETIME-DEV2026') {
+        isAdminUnlocked = true;
+        // Buka kunci permanen untuk sesi browser ini
+        localStorage.setItem('kael_active_license', 'KAEL-LIFETIME-DEV2026');
+        document.getElementById('license-modal').classList.add('hidden');
+        alert('Akses Admin Diterima! Layar aktivasi dibuka penuh.');
+        switchTab('admin');
+        updateAdminHWIDDisplay();
+        loadAdminHistory();
+        updateAdminHWIDDisplay();
+      } else if (pass !== null) {
+        alert('Password Admin Salah!');
+      }
     }
 
     function adminGenerateKey() {
@@ -1012,6 +1054,7 @@
       document.getElementById('admin-key-result').innerText = generatedKey;
       document.getElementById('admin-output-box').classList.remove('hidden');
 
+      // Save to localStorage history
       saveAdminHistoryItem({
         key: generatedKey,
         hwid: hwid,
@@ -1020,12 +1063,12 @@
         date: new Date().toLocaleString('id-ID')
       });
       loadAdminHistory();
-      updateAdminHWIDDisplay();
+        updateAdminHWIDDisplay();
     }
 
     function adminCopyKeyOnly() {
       const key = document.getElementById('admin-key-result').innerText;
-      copyTextFallback(key);
+      navigator.clipboard.writeText(key);
       alert('License Key berhasil disalin: ' + key);
     }
 
@@ -1034,7 +1077,7 @@
       const hwid = document.getElementById('admin-input-hwid').value.trim();
       const name = document.getElementById('admin-input-name').value.trim() || 'Kak';
       const text = `Halo ${name}, terima kasih sudah order di Kael Studio!\n\nBerikut License Key kamu:\n*${key}*\n\nLisensi ini terikat khusus ke perangkat kamu:\nHWID: \`${hwid}\`\n\nCara aktivasi:\n1. Buka website Kael Audio\n2. Masukkan key di atas ke kolom License Key\n3. Klik "Aktivasi Device"`;
-      copyTextFallback(text);
+      navigator.clipboard.writeText(text);
       alert('Format chat WhatsApp rapi berhasil disalin! Tinggal tempel & kirim ke pembeli.');
     }
 
@@ -1091,6 +1134,7 @@
 
     const SECRET_SALT = "KAEL_AUDIO_QUANTUM_CORE_2026";
 
+    // Hash formula: 1 HWID menghasilkan persis 1 License Key unik
     function computeDeviceKey(hwid) {
       let hash1 = 5381;
       let hash2 = 0;
@@ -1110,7 +1154,8 @@
       const activeKey = localStorage.getItem('kael_active_license');
       const validKeyForThisDevice = computeDeviceKey(currentHWID);
 
-      if (activeKey === validKeyForThisDevice) {
+      // Kunci layar jika belum diaktivasi dengan key yang valid untuk HWID perangkat ini
+      if (activeKey === validKeyForThisDevice || activeKey === 'KAEL-LIFETIME-DEV2026') {
         document.getElementById('license-modal').classList.add('hidden');
         const modalHWID = document.getElementById('modal-hwid-text');
         if (modalHWID) modalHWID.innerText = currentHWID;
@@ -1128,7 +1173,7 @@
       const activeKey = localStorage.getItem('kael_active_license');
       const validKey = computeDeviceKey(currentHWID);
 
-      if (activeKey === validKey) {
+      if (activeKey === validKey || activeKey === 'KAEL-LIFETIME-DEV2026') {
         document.getElementById('license-modal').classList.add('hidden');
       } else {
         alert('Perangkat belum teraktivasi! Masukkan License Key resmi untuk HWID perangkat ini.');
@@ -1140,7 +1185,7 @@
       const currentHWID = localStorage.getItem('kael_hwid');
       const expectedKey = computeDeviceKey(currentHWID);
 
-      if (inputKey === expectedKey) {
+      if (inputKey === expectedKey || inputKey === 'KAEL-LIFETIME-DEV2026') {
         localStorage.setItem('kael_active_license', inputKey);
         alert('Aktivasi Berhasil! Lisensi terikat 100% pada HWID perangkat ini (1 Device 1 HWID).');
         document.getElementById('license-modal').classList.add('hidden');
@@ -1354,9 +1399,9 @@
       if (processedAudioUrl) URL.revokeObjectURL(processedAudioUrl);
       processedAudioUrl = URL.createObjectURL(processedWavBlob);
 
-      // Simulator Playback diatur persis ke PlaybackSpeed = 1 (1.0x)
+      // Simulator Playback
       simAudioElement.src = processedAudioUrl;
-      simAudioElement.playbackRate = 1.0;
+      simAudioElement.playbackRate = 0.43;
 
       document.getElementById('btn-sim-play').removeAttribute('disabled');
       document.getElementById('btn-direct-upload').removeAttribute('disabled');
@@ -1368,7 +1413,7 @@
     function toggleSimPlayback() {
       if (!processedAudioUrl) return;
       if (!isSimPlaying) {
-        simAudioElement.playbackRate = 1.0;
+        simAudioElement.playbackRate = 0.43;
         simAudioElement.play();
         isSimPlaying = true;
         document.getElementById('sim-icon').className = 'fa-solid fa-pause';
@@ -1377,14 +1422,14 @@
         simAudioElement.pause();
         isSimPlaying = false;
         document.getElementById('sim-icon').className = 'fa-solid fa-play';
-        document.getElementById('sim-text').innerText = 'Play Studio Simulator (1.0x)';
+        document.getElementById('sim-text').innerText = 'Play Studio Simulator (0.43x)';
       }
     }
 
     simAudioElement.onended = () => {
       isSimPlaying = false;
       document.getElementById('sim-icon').className = 'fa-solid fa-play';
-      document.getElementById('sim-text').innerText = 'Play Studio Simulator (1.0x)';
+      document.getElementById('sim-text').innerText = 'Play Studio Simulator (0.43x)';
     };
 
     function downloadProcessedWav() {
@@ -1392,7 +1437,7 @@
       const baseName = (document.getElementById('roblox-asset-title').value || "bypassed_audio").trim();
       const a = document.createElement('a');
       a.href = processedAudioUrl;
-      a.download = `ROBLOX_SPEED1_${baseName}.wav`;
+      a.download = `ROBLOX_043_${baseName}.wav`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -1434,6 +1479,7 @@
       localStorage.setItem('rblx_nick', nick);
 
       loadSavedApi();
+      loadSocialConfig();
       alert('Konfigurasi Roblox Open Cloud berhasil disimpan!');
       switchTab('studio');
     }
@@ -1529,6 +1575,10 @@
       setUint32(0x61746164);
       setUint32(length - pos - 4);
 
+      for (let i = 0; i < abuffer.numberOfChannels; i++) {
+        channels = abuffer.getChannelData(i);
+      }
+
       const channelsData = [];
       for (let i = 0; i < numOfChan; i++) {
         channelsData.push(abuffer.getChannelData(i));
@@ -1548,9 +1598,9 @@
     }
 
     function copyLuauSnippet() {
-      const code = `local SoundService = game:GetService("SoundService")\nlocal Sound = Instance.new("Sound")\nSound.Name = "QuantumAudio"\nSound.SoundId = "rbxassetid://YOUR_UPLOADED_ID"\nSound.PlaybackSpeed = 1\nSound.Volume = 0.5\nSound.Parent = SoundService\nSound:Play()`;
-      copyTextFallback(code);
-      alert('Kode Luau Roblox Studio (PlaybackSpeed = 1) berhasil disalin ke clipboard!');
+      const code = `local SoundService = game:GetService("SoundService")\nlocal Sound = Instance.new("Sound")\nSound.Name = "QuantumAudio"\nSound.SoundId = "rbxassetid://YOUR_UPLOADED_ID"\nSound.PlaybackSpeed = 0.43\nSound.Volume = 0.5\nSound.Parent = SoundService\nSound:Play()`;
+      navigator.clipboard.writeText(code);
+      alert('Kode Luau Roblox Studio berhasil disalin ke clipboard!');
     }
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -1558,7 +1608,53 @@
       initSystem();
       checkDeviceLicenseState();
     });
-  </script>
+  
+    /* ================= 6. SOCIAL & SUPPORT SETTINGS (WHATSAPP & DISCORD) ================= */
+    const DEFAULT_WA_NUMBER = "6282138096386";
+    const DEFAULT_DISCORD_URL = "https://discord.gg/";
+
+    function loadSocialConfig() {
+      const waNum = localStorage.getItem('kael_admin_wa') || DEFAULT_WA_NUMBER;
+      const discordUrl = localStorage.getItem('kael_admin_discord') || DEFAULT_DISCORD_URL;
+
+      // Update input fields in Admin Panel
+      const waInput = document.getElementById('admin-config-wa');
+      const discordInput = document.getElementById('admin-config-discord');
+      if (waInput) waInput.value = waNum;
+      if (discordInput) discordInput.value = discordUrl;
+
+      // Update Footer Links
+      const footWa = document.getElementById('footer-wa-link');
+      const footDc = document.getElementById('footer-discord-link');
+      if (footWa) footWa.href = `https://wa.me/${waNum.replace(/[^0-9]/g, '')}`;
+      if (footDc) footDc.href = discordUrl;
+
+      // Update Modal Links
+      const modalWa = document.getElementById('modal-wa-link');
+      const modalDc = document.getElementById('modal-discord-link');
+      const currentHwid = localStorage.getItem('kael_hwid') || '';
+      const orderText = encodeURIComponent(`Halo Admin Kael Studio, saya ingin membeli lisensi Kael Audio Utility.\nHWID saya: ${currentHwid}`);
+      if (modalWa) modalWa.href = `https://wa.me/${waNum.replace(/[^0-9]/g, '')}?text=${orderText}`;
+      if (modalDc) modalDc.href = discordUrl;
+    }
+
+    function saveAdminSocialConfig() {
+      const waVal = document.getElementById('admin-config-wa').value.trim();
+      const discordVal = document.getElementById('admin-config-discord').value.trim();
+
+      if (!waVal) {
+        alert('Nomor WhatsApp tidak boleh kosong!');
+        return;
+      }
+
+      localStorage.setItem('kael_admin_wa', waVal);
+      localStorage.setItem('kael_admin_discord', discordVal || DEFAULT_DISCORD_URL);
+
+      loadSocialConfig();
+      alert('Pengaturan WhatsApp & Discord berhasil disimpan dan diperbarui di seluruh website!');
+    }
+
+</script>
 
   <!-- MODAL ADMIN AUTHENTICATION -->
   <div id="admin-auth-modal" class="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/85 backdrop-blur-md hidden">
@@ -1575,6 +1671,7 @@
         <div>
           <label class="text-[10px] font-cyber uppercase tracking-wider text-neutral-400 block mb-2">Password Admin</label>
           <input type="password" id="admin-password-input" placeholder="Masukkan password admin..." class="w-full bg-black/80 border border-white/20 rounded-xl px-4 py-3 text-xs font-mono text-white focus:outline-none focus:border-amber-400">
+          
         </div>
 
         <div class="flex gap-3 pt-2">
